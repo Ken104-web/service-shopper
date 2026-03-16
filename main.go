@@ -4,9 +4,8 @@ import (
 	"log"
 
 	"service-shopper/model"
-
-
-	"gorm.io/driver/sqlite"
+	
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 func main(){
