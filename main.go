@@ -70,9 +70,17 @@ func main(){
 
 		product_name := items[rand.Intn(len(items))] 
 		price := fake.IntBetween(8, 50)
+		// lets picks randomly here
+		customer := customers[rand.Intn(len(customers))]
+		service := services[rand.Intn(len(services))]
+		
+		// call the here
 		produce := model.Product{
 			Item_Name: product_name,	
 			Price: price,
+			CustomerID: customer.ID,
+			ServiceID: service.ID,
+
 		}
 		products = append(products, produce)
 	}
