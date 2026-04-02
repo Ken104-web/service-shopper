@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"math/rand"
+	"time"
 
 	"service-shopper/model"
 
@@ -20,6 +22,7 @@ func main(){
 
 	// insert customer data into tables 
 	// define the slice(literal)
+	db.Exec("DELETE FROM customers")
 	customers := []model.Customer{}
 	// append them to the slice 
 		fake := faker.New()
@@ -35,31 +38,52 @@ func main(){
 		if r.Error != nil{
 			log.Fatalf("no record of customer: %v", r.Error)
 		}
-	service := []model.Service{}
-	// append that data 
-	fake := faker.New()
-	for i:=0; i<3; i++{
-		s := fake.Person()
-		// r := fake.RandomDigit()
-		servant := model.Service{
-			Name: s.Name()
-			// Rating: r.Rating()
-		}
-		servants =append(servants, servant)
-	}
-	// save to DB 
-	r :=db.Create(&service)
-	if r.Error != nil{
-		log.Fatal("customer cannot be served due to lack of servant: %v", r.Error)
-	}
-	
-	product := []model.Product{}
-	// list the array data
-	items := [...]string{"Bread", "Milk", "Eggs", "Fresh fruits"}
+	db.Exec("DELETE FROM services")
 
-	err = db.AutoMigrate(&model.Customer{}, &model.Service{}, &model.Product{})
-	if err != nil{
-		log.Fatal(err)
-	}
+	services := []model.Service{}
+		// append that data
+		fake = faker.New()
+		for i:=0; i<3; i++{
+			s := fake.Person()
+			rating := fake.IntBetween(0, 10)
+			servant := model.Service{
+				Name: s.Name(),
+				Rating: rating,
+			}
+			services = append(services, servant)
+		}
+		// save to DB 
+		res :=db.Create(&services)
+		if res.Error != nil{
+			log.Fatalf("customer cannot be served due to lack of servant: %v", res.Error)
+		}
 	
+	db.Exec("DELETE FROM products")	
+	
+	products := []model.Product{}
+	//  list the array data
+	items := [...]string{"Bread", "Milk", "Eggs", "Fresh fruits"}
+	fake = faker.New()	
+	for i:=0; i<3; i++{
+		// to avoid repeate of the same random object
+		rand.NewSource(time.Now().UnixNano())
+
+		product_name := items[rand.Intn(len(items))] 
+		price := fake.IntBetween(8, 50)
+		produce := model.Product{
+			Item_Name: product_name,	
+			Price: price,
+		}
+		products = append(products, produce)
+	}
+	result := db.Create(&products)
+	if result.Error != nil{
+		log.Fatalf("pfft what more can i say its not there: %v",  result.Error)
+	}
+
+err = db.AutoMigrate(&model.Customer{}, &model.Service{}, &model.Product{})
+if err != nil{
+	log.Fatal(err)
+	}
+
 }

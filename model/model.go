@@ -29,6 +29,7 @@ type Service struct{
 type Product struct{
 	gorm.Model
 	Item_Name string
+	Price int
 	
 	ServiceID uint // foreignKey to service 
 	CustomerID uint // foreignKey to customer 

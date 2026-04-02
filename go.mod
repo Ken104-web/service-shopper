@@ -4,6 +4,7 @@ go 1.25.8
 
 require (
 	github.com/glebarez/sqlite v1.11.0
+	github.com/jaswdr/faker/v2 v2.9.1
 	gorm.io/gorm v1.30.5
 )
 
@@ -11,7 +12,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/glebarez/go-sqlite v1.21.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/jaswdr/faker/v2 v2.9.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
