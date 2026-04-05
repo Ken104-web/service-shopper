@@ -34,3 +34,7 @@ type Product struct{
 	ServiceID uint // foreignKey to service 
 	CustomerID uint // foreignKey to customer 
 }
+
+
+
+

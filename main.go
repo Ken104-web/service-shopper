@@ -88,8 +88,25 @@ func main(){
 	if result.Error != nil{
 		log.Fatalf("pfft what more can i say its not there: %v",  result.Error)
 	}
+	
+	// fill the join table 
+	db.Exec("DELETE FROM customers")	
+	for i := range customers{
+		customer := &customers[i]
 
-err = db.AutoMigrate(&model.Customer{}, &model.Service{}, &model.Product{})
+		// fill random services
+		for i := 0; i<3; i++ {
+			service := services[rand.Intn(len(services))]
+
+			err := db.Model(customer).Association("Services").Append(&service)
+				
+			if err != nil {
+				log.Fatal(err)
+				}
+		}
+		
+	}
+	err = db.AutoMigrate(&model.Customer{}, &model.Service{}, &model.Product{})
 if err != nil{
 	log.Fatal(err)
 	}
