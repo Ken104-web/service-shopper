@@ -28,7 +28,23 @@ var shopperCmd = &cobra.Command{
 		for i, c := range customers{
 			fmt.Printf("%d. %s\n", i+1, c.Name)
 		}
+
+		// display through query
+		var name string
+		fmt.Println("\n Enter customer name: ")
+		fmt.Scanln(&name)
+
+		var c model.Customer
+		r = database.DB.Where("name =  ?", name).First(&c)
+
+		if r.Error != nil{
+			fmt.Println("Customer not found")
+			return
+		}
+		fmt.Printf("\nCustomer Name: %s\n", c.Name)
+
 	},
+
 
 }
 
