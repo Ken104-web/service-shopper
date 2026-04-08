@@ -1,7 +1,9 @@
-package main
+package cli
 
 import (
 	"fmt"
+	"log"
+	"service-shopper/database"
 	"service-shopper/model"
 
 	"github.com/spf13/cobra"
@@ -14,11 +16,24 @@ var shopperCmd = &cobra.Command{
 
 	// display customers
 	Run: func(cmd *cobra.Command, args []string) {
+		database.Data()
+
 		fmt.Println("Here is alist of all customers: ")
 
-		// var customers []model.Customer
+		var customers []model.Customer
+		r := database.DB.Find(&customers)
+		if r.Error != nil{
+			fmt.Println("Err fetching customers: ", r.Error)
+		}
+		for i, c := range customers{
+			fmt.Printf("%d. %s\n", i+1, c.Name)
+		}
 	},
-	
 
+}
 
+func Execute(){
+	if err := shopperCmd.Execute(); err != nil{
+		log.Fatal(err)
+	}
 }

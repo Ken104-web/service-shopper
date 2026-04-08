@@ -7,6 +7,7 @@ import (
 
 	"service-shopper/model"
 	"service-shopper/database"
+	"service-shopper/cli"
 
 	"github.com/jaswdr/faker/v2"
 )
@@ -99,7 +100,9 @@ func main(){
 				log.Fatal(err)
 				}
 		}
-		
+			// run cli
+		cli.Execute()
+			
 	}
 err := database.DB.AutoMigrate(&model.Customer{}, &model.Service{}, &model.Product{})
 if err != nil{
